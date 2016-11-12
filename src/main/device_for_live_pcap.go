@@ -9,8 +9,25 @@ import (
 )
 
 var (
-	device
+	device       string = "enp0s8"
+	snapshot_len int32  = 1024
+	promiscuous  bool   = false
+	err          error
+	timeout      time.Duration = 30 * time.Second
+	handle       *pcap.Handle
 )
 
-
-
+func main() {
+	// Open device
+	handle, err = pcap.OpenLive(device, snapshot_len, promiscuous, timeout)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer handle.Close()
+	
+	// パケットキャプチャする
+	packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
+	for packet := range packetSource.Packets() {
+		fmt.Println(packet)
+	}
+}
