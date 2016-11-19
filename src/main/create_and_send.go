@@ -33,7 +33,8 @@ func main() {
 	defer handle.Close()
 	
 	// パケットの書き込み
-	rawBytes := []byte{10, 20, 30}
+	// rawBytes := []byte{10, 20, 30, 40, 50, 60, 70, 80} // see ASCII code
+	rawBytes := "this is payload"
 	// err = handle.WritePacketData(rawBytes)
 	// if err != nil {
 	// 	log.Fatal(err)
@@ -73,11 +74,8 @@ func main() {
 		SrcPort: layers.TCPPort(3000),
 		DstPort: layers.TCPPort(3000),
 		Seq    : seq,
+		DataOffset: uint8(5),
 	}
-	tcp := tcpLayer
-	fmt.Printf("From port %d to %d\n", tcp.SrcPort, tcp.DstPort)
-	fmt.Println("Sequence number: ", tcp.Seq)
-	fmt.Println()
 	
 	// パケットの生成
 	// buffer = gopacket.NewSerializeBuffer()
@@ -86,7 +84,7 @@ func main() {
 		ipLayer,
 		tcpLayer,
 		gopacket.Payload(rawBytes),
-	)
+	)	
 	outgoingPacket := buffer.Bytes()
 	fmt.Println(outgoingPacket)	
 	err = handle.WritePacketData(outgoingPacket)
