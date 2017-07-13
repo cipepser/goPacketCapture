@@ -13,15 +13,11 @@ import (
 	"github.com/google/gopacket/pcap"
 )
 
-var (
-	pcapFile string = "./data/test.pcapng"
-	handle   *pcap.Handle
-	err      error
-)
-
 func main() {
+	pf := "./data/test.pcapng"
+
 	// Open file instead of device
-	handle, err = pcap.OpenOffline(pcapFile)
+	handle, err := pcap.OpenOffline(pf)
 	if err != nil {
 		log.Fatal(err)
 	}
