@@ -17,4 +17,5 @@ go version go1.6.3 linux/amd64
 にて実行する。
 
 # 参考
-[Goでパケットキャプチャを実践してみる](http://qiita.com/kkyouhei/items/846e74c6a9653b069e5f)
+* [Goでパケットキャプチャを実践してみる](http://qiita.com/kkyouhei/items/846e74c6a9653b069e5f)
+* [Packet Capture, Injection, and Analysis with Gopacket](http://www.devdungeon.com/content/packet-capture-injection-and-analysis-gopacket)
