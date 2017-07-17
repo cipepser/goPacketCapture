@@ -1,12 +1,7 @@
 // package pcktana
 package main
 
-// Use tcpdump to create a test file
-// tcpdump -w test.pcap
-// or use the example above for writing pcap files
-
 import (
-	"fmt"
 	"log"
 
 	"github.com/google/gopacket"
@@ -17,15 +12,21 @@ func main() {
 	pf := "./data/test.pcapng"
 
 	// Open file instead of device
-	handle, err := pcap.OpenOffline(pf)
+	h, err := pcap.OpenOffline(pf)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer handle.Close()
+	defer h.Close()
 
-	// Loop through packets in file
-	packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
-	for packet := range packetSource.Packets() {
-		fmt.Println(packet)
+	flows := make(map[gopacket.Flow]int, 0)
+
+	pSrc := gopacket.NewPacketSource(h, h.LinkType())
+	for p := range pSrc.Packets() {
+		flows[p.NetworkLayer().NetworkFlow()]++
+		// fmt.Println(p.NetworkLayer().NetworkFlow().Src())
+		// fmt.Println(p.NetworkLayer().NetworkFlow().Dst())
 	}
+
+	// fmt.Println(flows)
+
 }
